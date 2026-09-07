@@ -26,6 +26,9 @@
 #include "backends/fs/emscripten/emscripten-fs-factory.h"
 #include "backends/fs/emscripten/emscripten-posix-fs.h"
 #include "backends/fs/emscripten/http-fs.h"
+#ifdef RETROM_HOST
+#include "backends/fs/emscripten/retrom-fs.h"
+#endif
 #include "common/debug.h"
 #ifdef USE_CLOUD
 #include "backends/fs/emscripten/cloud-fs.h"
@@ -62,7 +65,9 @@ EM_ASYNC_JS(void, _initSettings, (const char *pathPtr), {
 });
 
 EmscriptenFilesystemFactory::EmscriptenFilesystemFactory() {
+#ifndef RETROM_HOST
 	_initSettings(getenv("HOME"));
+#endif
 	_httpNodes = new Common::HashMap<Common::String, HTTPFilesystemNode *>();
 }
 
@@ -78,6 +83,11 @@ AbstractFSNode *EmscriptenFilesystemFactory::makeRootFileNode() const {
 AbstractFSNode *EmscriptenFilesystemFactory::makeFileNodePath(const Common::String &path) const {
 	debug(5, "EmscriptenFilesystemFactory::makeFileNodePath(%s)", path.c_str());
 	assert(!path.empty());
+#ifdef RETROM_HOST
+	if (path == "/game" || path.hasPrefix("/game/") || path == "/data" || path.hasPrefix("/data/"))
+		return new RetromFilesystemNode(path);
+	return new EmscriptenPOSIXFilesystemNode(path);
+#else
 	if (path.hasPrefix(DATA_PATH)) {
 		if (!_httpNodes->contains(path)) {
 			// finding a node by path requires a http request to the server, so we cache the nodes
@@ -91,5 +101,6 @@ AbstractFSNode *EmscriptenFilesystemFactory::makeFileNodePath(const Common::Stri
 	} else {
 		return new EmscriptenPOSIXFilesystemNode(path);
 	}
+#endif
 }
 #endif

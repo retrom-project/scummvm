@@ -95,6 +95,7 @@ endif
 ifdef EMSCRIPTEN
 MODULE_OBJS += \
 	emscripten/emscripten-main.o \
+	emscripten/retrom-host.o \
 	emscripten/emscripten.o
 endif
 

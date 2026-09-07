@@ -25,6 +25,9 @@
 #include "backends/events/sdl/sdl-events.h"
 #include "backends/platform/sdl/emscripten/emscripten.h"
 #include "common/events.h"
+#ifdef RETROM_HOST
+#include "backends/platform/sdl/emscripten/retrom-host.h"
+#endif
 
 /**
  * SDL Events manager for Emscripten
@@ -35,7 +38,9 @@ public:
 	 * Gets and processes SDL events.
 	 */
 	bool pollEvent(Common::Event &event) override {
-	
+#ifdef RETROM_HOST
+		RetromHost::poll();
+#endif
 		bool ret_value = SdlEventSource::pollEvent(event);
 		if (event.type != Common::EVENT_QUIT && event.type != Common::EVENT_RETURN_TO_LAUNCHER) {	
 			// yield to the browser and process timers  

@@ -19,6 +19,9 @@
  *
  */
 
+#ifdef RETROM_HOST
+#include "backends/platform/sdl/emscripten/retrom-host.h"
+#endif
 #include "common/scummsys.h"
 
 #ifdef USE_CLOUD
@@ -202,8 +205,12 @@ bool DefaultSaveFileManager::removeSavefile(const Common::String &filename) {
 		file = _saveFileCache.end();
 
 		Common::ErrorCode result = removeFile(fileNode);
-		if (result == Common::kNoError)
+		if (result == Common::kNoError) {
+#ifdef RETROM_HOST
+			RetromHost::saveRemoved();
+#endif
 			return true;
+		}
 		Common::Error error(result);
 		setError(error, "Failed to remove savefile '" + fileNode.getName() + "': " + error.getDesc());
 		return false;

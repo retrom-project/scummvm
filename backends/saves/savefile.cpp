@@ -22,16 +22,26 @@
 #include "common/util.h"
 #include "common/savefile.h"
 #include "common/str.h"
+#ifdef RETROM_HOST
+#include "backends/platform/sdl/emscripten/retrom-host.h"
+#endif
 #ifdef USE_CLOUD
 #include "backends/cloud/cloudmanager.h"
 #endif
 
 namespace Common {
 
-OutSaveFile::OutSaveFile(WriteStream *w): _wrapped(w) {}
+OutSaveFile::OutSaveFile(WriteStream *w): _wrapped(w) {
+#ifdef RETROM_HOST
+	RetromHost::saveOpened();
+#endif
+}
 
 OutSaveFile::~OutSaveFile() {
 	delete _wrapped;
+#ifdef RETROM_HOST
+	RetromHost::saveClosed();
+#endif
 #ifdef USE_CLOUD
 	CloudMan.syncSaves();
 #endif

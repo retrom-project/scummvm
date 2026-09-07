@@ -236,6 +236,7 @@ _16bit=auto
 _highres=auto
 _savegame_timestamp=auto
 _dynamic_modules=no
+_retrom_host=no
 _elf_loader=no
 _plugins_default=static
 _plugin_prefix=
@@ -1028,6 +1029,7 @@ Optional Features:
                            undefined-behavior-related debugging
   --enable-profiling       enable profiling
   --enable-plugins         enable the support for dynamic plugins
+  --enable-retrom-host     build the isolated Emscripten host module
   --default-dynamic        make plugins dynamic by default
   --disable-mt32emu        don't enable the integrated MT-32 emulator
   --disable-seq-midi       don't enable OSS MIDI sequencer
@@ -1408,6 +1410,7 @@ for ac_option in $@; do
 	--enable-verbose-build)      _verbose_build=yes      ;;
 	--enable-cygwin-build)       _cygwin_build=yes       ;;
 	--enable-plugins)            _dynamic_modules=yes    ;;
+	--enable-retrom-host)        _retrom_host=yes        ;;
 	--default-dynamic)           _plugins_default=dynamic;;
 	--enable-mt32emu)            _mt32emu=yes            ;;
 	--disable-mt32emu)           _mt32emu=no             ;;
@@ -3378,7 +3381,8 @@ EOF
 			embuilder build sdl3
 		fi
 		_pkg_config=yes
-		PKG_CONFIG_LIBDIR="$EMSDK/upstream/emscripten/cache/sysroot/local/lib/pkgconfig:$EMSDK/upstream/emscripten/cache/sysroot/lib/pkgconfig"
+		emscripten_cache="${EM_CACHE:-$EMSDK/upstream/emscripten/cache}"
+		PKG_CONFIG_LIBDIR="$emscripten_cache/sysroot/local/lib/pkgconfig:$emscripten_cache/sysroot/lib/pkgconfig"
 		_sdlconfig="pkg-config sdl3"
 		_sdlversion=`$_sdlconfig --modversion`
 		append_var SDL_CFLAGS "`$_sdlconfig --cflags | sed 's/[[:space:]]*-Dmain=SDL_main//g'`"
@@ -3396,7 +3400,7 @@ EOF
 			# neither pkg-config nor freetype-config work, so we setup freetype manually
 			append_var LDFLAGS "-s USE_FREETYPE=1"
 			_freetype_found="true"
-			_freetypepath="$EMSDK/upstream/emscripten/cache/sysroot/include/freetype2/"
+			_freetypepath="$emscripten_cache/sysroot/include/freetype2/"
 			FREETYPE2_CFLAGS="-I$_freetypepath"
 		else
 			_freetype2=no
@@ -7790,7 +7794,15 @@ case $_host_os in
 		fi
 		;;
 	emscripten)
-		append_var LDFLAGS '--pre-js $(srcdir)/dists/emscripten/custom_shell-pre.js --post-js $(srcdir)/dists/emscripten/custom_shell-post.js --shell-file $(srcdir)/dists/emscripten/custom_shell.html'
+		if test "$_retrom_host" = yes; then
+			HOSTEXEEXT=.mjs
+			append_var DEFINES '-DRETROM_HOST'
+			append_var LDFLAGS '--pre-js $(srcdir)/dists/emscripten/retrom-pre.js'
+			append_var LDFLAGS '-s MODULARIZE=1 -s EXPORT_ES6=1 -s EXPORT_NAME=createScummVM -s ENVIRONMENT=web -s EXIT_RUNTIME=1'
+			append_var LDFLAGS '-s EXPORTED_RUNTIME_METHODS=[FS,callMain,ccall,UTF8ToString,setValue]'
+		else
+			append_var LDFLAGS '--pre-js $(srcdir)/dists/emscripten/custom_shell-pre.js --post-js $(srcdir)/dists/emscripten/custom_shell-post.js --shell-file $(srcdir)/dists/emscripten/custom_shell.html'
+		fi
 		# we remove some linker flags for libs which will be added by emscripten from emscripten-ports to avoid duplicate symbols
 		if test "${LDFLAGS#*-s USE_GIFLIB=1}" != "$LDFLAGS"; then
 			LIBS=`echo ${LIBS} | sed 's/-lgif//g'`
