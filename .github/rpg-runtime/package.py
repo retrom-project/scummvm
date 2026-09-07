@@ -43,6 +43,7 @@ def sources():
     for path in [ROOT / "COPYING", ROOT / "COPYRIGHT", ROOT / "AUTHORS", *sorted((ROOT / "LICENSES").glob("*"))]:
         if path.is_file():
             files[f"licenses/{path.name}"] = path
+    files["licenses/SDL3-LICENSE.txt"] = ROOT / ".retrom/em-cache/ports/sdl3/SDL-release-3.2.4/LICENSE.txt"
     files["licenses/build-inputs.json"] = ROOT / ".github/rpg-runtime/build-lock.json"
     for name, directory in [("libmad", "libmad-0.15.1b"), ("libtheora", "libtheora-1.1.1"),
                             ("libmpeg2", "libmpeg2-946bf4b518aacc224f845e73708f99e394744499")]:

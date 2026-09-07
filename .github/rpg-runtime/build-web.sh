@@ -3,6 +3,8 @@ set -euo pipefail
 root=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
 cd "$root"
 export EM_CACHE="$root/.retrom/em-cache"
+python3 .github/rpg-runtime/prepare-sdl3.py
+python3 .github/rpg-runtime/test_sdl3_axes.py
 prefix="$root/.retrom/libs/install"
 mkdir -p "$prefix" "$root/.retrom/web"
 if [[ ! -f "$prefix/lib/libmad.a" ]]; then

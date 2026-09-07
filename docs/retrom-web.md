@@ -12,7 +12,7 @@ Run `.github/rpg-runtime/build-candidate.sh /absolute/empty/output` as the curre
 non-root user, or use the consuming workspace's explicit PFB core-build command.
 The script pins the SDK image, verifies downloaded codec sources, builds the
 static Linux x86-64 detector and the hosted Web backend, runs detector/JavaScript
-regressions, and emits `scummvm-runtime.zip` plus a candidate descriptor containing
+and native restore/input regressions, and emits `scummvm-runtime.zip` plus a candidate descriptor containing
 actual Git and working-tree identity. No tag or Release is created by this command.
 
 The archive contains the ES module factory, shared WASM, 105 selected stable engine
@@ -26,6 +26,16 @@ Incremental build state lives in ignored `.retrom/`. `build-web.sh` exports its
 Emscripten cache inside the SDK shell because the SDK entrypoint replaces an
 inherited `EM_CACHE`. Changes to configure/link flags may rebuild every engine.
 Runtime aggregation consumes this archive; it never compiles ScummVM.
+
+The pinned SDL 3.2.4 browser driver needs one bounded local patch: initialize axes
+from the first browser sample even when its timestamp is unchanged. Without it,
+SDL discards the first stick movement as an initial position. `prepare-sdl3.py`
+checks the SDK version and exact original source hash, applies the marked patch
+idempotently, and invalidates only this worktree's SDL libraries and final link.
+Unknown source fails the build. `test_sdl3_axes.py` executes the actual SDL sampling
+and event delivery functions for first movement, release and a fresh device. The
+archive retains SDL's original license. The left stick moves ScummVM's virtual
+mouse; D-pad actions remain engine-specific upstream mappings.
 
 ## Host contract
 
