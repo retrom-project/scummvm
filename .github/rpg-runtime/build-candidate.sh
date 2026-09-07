@@ -6,6 +6,7 @@ output=${1:?usage: build-candidate.sh ABSOLUTE_EMPTY_OUTPUT}
 python3 .github/rpg-runtime/candidate_descriptor.py prepare "$output"
 python3 .github/rpg-runtime/fetch-inputs.py
 python3 .github/rpg-runtime/test_web_javascript.py
+python3 .github/rpg-runtime/test_restore_boundary.py
 image="retrom-scummvm-toolchain:$(sha256sum .github/rpg-runtime/Dockerfile | cut -c1-16)"
 docker build -t "$image" -f .github/rpg-runtime/Dockerfile .
 docker run --rm --user "$(id -u):$(id -g)" -v "$root:$root" -w "$root" "$image" \

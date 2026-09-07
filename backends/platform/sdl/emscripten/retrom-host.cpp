@@ -15,6 +15,7 @@ EM_JS(int, retromCommand, (), { const value = Module.retromHost.command; Module.
 EM_JS(bool, retromShouldPause, (), { return Module.retromHost.paused && !Module.retromHost.command; });
 EM_JS(void, retromPaused, (int paused), { Module.retromHost.onPaused(!!paused); });
 EM_JS(void, retromSaveResult, (int slot, int error), { Module.retromHost.onSaveResult(slot, error); });
+EM_JS(void, retromRestoreResult, (int slot, int success), { Module.retromHost.onRestoreResult(slot, !!success); });
 EM_JS(void, retromWriteEvent, (int open), { Module.retromHost.onWrite(!!open); });
 EM_JS(void, retromStopping, (), { Module.retromHost.onEngineStopping(); });
 EM_JS(void, retromStopped, (int error), { Module.retromHost.onEngineStopped(error); });
@@ -27,6 +28,12 @@ bool polling = false;
 int pendingSlot = -1;
 uint32 saveDeadline = 0;
 uint openSaves = 0;
+bool restoreReported = false;
+
+bool hasRestoreResult() {
+	const Common::String id = ConfMan.get("engineid");
+	return id == "sky" || id == "queen" || id == "scumm" || id == "sci" || id == "drascula";
+}
 
 int unusedSlot(const MetaEngine &meta) {
 	const SaveStateList saves = meta.listSaves(ConfMan.getActiveDomainName().c_str(), true);
@@ -83,8 +90,8 @@ void poll() {
 	const MetaEngine &meta = *g_engine->getMetaEngine();
 	bool capture = g_engine->hasFeature(Engine::kSupportsSavingDuringRuntime) && meta.hasFeature(MetaEngine::kSupportsListSaves);
 	bool available = capture && g_engine->canSaveGameStateCurrently();
-	retromStatus(capture, available && pendingSlot < 0, meta.hasFeature(MetaEngine::kSupportsLoadingDuringStartup));
 	finishSave(meta);
+	retromStatus(capture, available && pendingSlot < 0, hasRestoreResult() && meta.hasFeature(MetaEngine::kSupportsLoadingDuringStartup));
 	const int command = retromCommand();
 	if (command == 1 && pendingSlot < 0)
 		saveAtBoundary(meta, available);
@@ -106,7 +113,15 @@ void poll() {
 	polling = false;
 }
 
-void engineStarted() { running = true; }
+void engineStarted() { running = true; restoreReported = false; }
+void restoreResult(int slot, bool success) {
+	if (restoreReported || !ConfMan.hasKey("save_slot") || ConfMan.getInt("save_slot") != slot)
+		return;
+	restoreReported = true;
+	retromRestoreResult(slot, success);
+	if (!success)
+		Engine::quitGame();
+}
 void engineStopping() {
 	running = false;
 	if (pendingSlot >= 0) {

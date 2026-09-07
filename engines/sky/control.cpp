@@ -20,6 +20,7 @@
  */
 
 
+#include "common/retrom-restore.h"
 #include "backends/keymapper/keymap.h"
 
 #include "common/endian.h"
@@ -1541,6 +1542,7 @@ uint16 Control::quickXRestore(uint16 slot) {
 	_skyText->fnSetFont(_savedCharSet);
 
 	removePanel();
+	RetromHost::restoreResult(slot, result == GAME_RESTORED);
 	return result;
 }
 

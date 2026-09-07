@@ -19,6 +19,7 @@
  *
  */
 
+#include "common/retrom-restore.h"
 #include "base/plugins.h"
 
 #include "common/config-manager.h"
@@ -251,6 +252,7 @@ Common::Error QueenEngine::loadGameState(int slot) {
 		err = Common::kReadingFailed;
 	}
 
+	RetromHost::restoreResult(slot, err.getCode() == Common::kNoError);
 	return err;
 }
 

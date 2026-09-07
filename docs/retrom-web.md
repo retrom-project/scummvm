@@ -48,8 +48,14 @@ support, checks the current scene, allocates a free non-autosave slot, and waits
 for the slot to appear with no open save streams. Deferred engine saves use the
 same completion boundary with a 15-second limit. Existing slots are not overwritten.
 The result reports the precise native slot; unsupported games retain in-game
-saving. Startup restoration follows the engine's native load-at-startup support;
-no latest-slot guessing or execution-memory snapshot is introduced.
+saving. Startup restoration requires both native load-at-startup support and an explicit
+`onRestoreResult(slot, success)` observation after actual deserialization. Sky,
+SCUMM, SCI, Queen and Drascula provide that observation in this build. Other engines
+retain in-game restoration until an equivalent completion boundary is integrated.
+The host waits for the exact restored slot before completing mount and fails on
+rejection or timeout; a failed observed load requests native quit. Drascula reports
+a chapter change only after the eventual load succeeds, not when it schedules the
+chapter transition. No latest-slot guessing or execution-memory snapshot is used.
 
 Save stream open/close and successful file deletion notify the host. The browser
 copies a complete file set at safe boundaries, computes content revisions and
@@ -62,7 +68,8 @@ event. Requested exits use the same cleanup boundary without reopening the launc
 ## Verification and publishing
 
 `test_detector.py` exercises bounded detection and supports an optional local
-public-game corpus. `test_web_javascript.py` executes the embedded speech/MIDI
+public-game corpus. `test_restore_boundary.py` executes the native exact-slot/once-only result guard.
+`test_web_javascript.py` executes the embedded speech/MIDI
 JavaScript under strict parsing. Hosted control, file-cache and native-save tests
 belong to the consuming runtime; product import, review, launch, input and restore
 acceptance belongs to Retrom. Building this fork alone does not prove game support.
