@@ -77,7 +77,7 @@ EM_JS(void, downloadFile, (const char *filenamePtr, char *dataPtr, int dataSize)
  * 		  window.opener.postMessage(document.getElementById("json").value,"*")
  */
 EM_JS(bool, cloud_connection_open_oauth_window, (char const *url), {
-	oauth_window = window.open(UTF8ToString(url));
+	const oauth_window = window.open(UTF8ToString(url));
 	window.addEventListener("message", (event) => {
 		Module._cloud_connection_json_callback(stringToNewUTF8( JSON.stringify(event.data)));
 		oauth_window.close()
@@ -132,7 +132,11 @@ bool OSystem_Emscripten::hasFeature(Feature f) {
 	if (f == kFeatureFullscreenMode)
 		return true;
 	if (f == kFeatureNoQuit)
+#ifdef RETROM_HOST
+		return false;
+#else
 		return true;
+#endif
 	return OSystem_POSIX::hasFeature(f);
 }
 

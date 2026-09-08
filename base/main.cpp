@@ -35,6 +35,9 @@
 #include "base/commandLine.h"
 #include "base/plugins.h"
 #include "base/version.h"
+#ifdef RETROM_HOST
+#include "backends/platform/sdl/emscripten/retrom-host.h"
+#endif
 
 #include "common/archive.h"
 #include "common/config-manager.h"
@@ -325,7 +328,13 @@ static Common::Error runGame(const Plugin *enginePlugin, OSystem &system, const 
 	system.getEventManager()->purgeMouseEvents();
 
 	// Run the engine
+#ifdef RETROM_HOST
+	RetromHost::engineStarted();
+#endif
 	Common::Error result = engine->run();
+#ifdef RETROM_HOST
+	RetromHost::engineStopping();
+#endif
 
 	// Make sure we do not return to the launcher if this is not possible.
 	if (!engine->hasFeature(Engine::kSupportsReturnToLauncher))
@@ -339,6 +348,10 @@ static Common::Error runGame(const Plugin *enginePlugin, OSystem &system, const 
 
 	// Free up memory
 	metaEngine.deleteInstance(engine, game, meDescriptor);
+#ifdef RETROM_HOST
+	// Destructors may flush native saves after the engine run loop has ended.
+	RetromHost::engineStopped(result.getCode());
+#endif
 
 	// Reset the file/directory mappings
 	SearchMan.clear();
@@ -858,6 +871,11 @@ extern "C" int scummvm_main(int argc, const char * const argv[]) {
 			ConfMan.defragment();
 			// The keymapper keeps pointers to the configuration domains. It needs to be reinitialized.
 			setupKeymapper(system);
+#endif
+
+#ifdef RETROM_HOST
+			// The enclosing host owns the launcher and the next game instance.
+			break;
 #endif
 
 			// Did an error occur ?

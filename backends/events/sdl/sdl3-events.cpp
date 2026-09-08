@@ -901,7 +901,7 @@ void SdlEventSource::openJoystick(int joystickIndex) {
 	auto joystickIds = SDL_GetJoysticks(&numJoysticks);
 	if (!joystickIds) {
 		warning("Failed to get connected joysticks: %s", SDL_GetError());
-	} else if (numJoysticks > joystickIndex) {
+	} else if (joystickIndex >= 0 && numJoysticks > joystickIndex) {
 		auto joystickId = joystickIds[joystickIndex];
 		if (SDL_IsGamepad(joystickId)) {
 			_controller = SDL_OpenGamepad(joystickId);
@@ -928,17 +928,26 @@ void SdlEventSource::closeJoystick() {
 }
 
 bool SdlEventSource::handleJoystickAdded(const SDL_JoyDeviceEvent &device, Common::Event &event) {
-	debug(5, "SdlEventSource: Received joystick added event for index '%d'", device.which);
+	debug(5, "SdlEventSource: Received joystick added event for instance id '%d'", device.which);
 
 	int joystick_num = ConfMan.getInt("joystick_num");
-	if (joystick_num != device.which) {
+	if (joystick_num < 0 || _controller || _joystick) {
 		return false;
 	}
 
-	debug(5, "SdlEventSource: Newly added joystick with index '%d' matches 'joysticky_num', trying to use it", device.which);
+	// SDL3 reports instance IDs for additions, while joystick_num is an ordinal.
+	int numJoysticks = 0;
+	auto joystickIds = SDL_GetJoysticks(&numJoysticks);
+	bool selected = joystickIds && joystick_num < numJoysticks && joystickIds[joystick_num] == device.which;
+	SDL_free(joystickIds);
+	if (!selected) {
+		return false;
+	}
 
-	closeJoystick();
 	openJoystick(joystick_num);
+	if (!_controller && !_joystick) {
+		return false;
+	}
 
 	event.type = Common::EVENT_INPUT_CHANGED;
 	return true;

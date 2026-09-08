@@ -103,6 +103,7 @@ ifdef EMSCRIPTEN
 MODULE_OBJS += \
 	fs/emscripten/emscripten-fs-factory.o \
 	fs/emscripten/emscripten-posix-fs.o \
+	fs/emscripten/retrom-fs.o \
 	fs/emscripten/http-fs.o \
 	midi/webmidi.o
 ifdef USE_CLOUD

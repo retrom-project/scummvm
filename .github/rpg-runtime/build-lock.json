@@ -1,0 +1,912 @@
+{
+  "schemaVersion": 1,
+  "upstreamCommit": "fed42f2068dcafc6aafa1c28c77e4c88def74b66",
+  "emscriptenImage": "emscripten/emsdk@sha256:90b757eb11fa9a0e3ce4d2d9f76d932a56018e4accc37b5a28b2783751e60eb7",
+  "sources": [
+    {"filename": "libmad-0.15.1b.tar.gz", "url": "https://downloads.sourceforge.net/mad/libmad-0.15.1b.tar.gz", "sha256": "bbfac3ed6bfbc2823d3775ebb931087371e142bb0e9bb1bee51a76a6e0078690"},
+    {"filename": "libtheora-1.1.1.tar.bz2", "url": "https://downloads.xiph.org/releases/theora/libtheora-1.1.1.tar.bz2", "sha256": "b6ae1ee2fa3d42ac489287d3ec34c5885730b1296f0801ae577a35193d3affbc"},
+    {"filename": "libmpeg2.tar.gz", "url": "https://code.videolan.org/videolan/libmpeg2/-/archive/946bf4b518aacc224f845e73708f99e394744499/libmpeg2-946bf4b518aacc224f845e73708f99e394744499.tar.gz", "sha256": "3e2b623117d12cf39cb539f16691fd8353ef556e92bb3b0cccf34ef68f7a7402"}
+  ],
+  "engines": [
+    {
+      "id": "access",
+      "parent": "access",
+      "enabled": true,
+      "description": "Access"
+    },
+    {
+      "id": "adl",
+      "parent": "adl",
+      "enabled": true,
+      "description": "ADL"
+    },
+    {
+      "id": "agds",
+      "parent": "agds",
+      "enabled": false,
+      "description": "AGDS (Black Mirror and NiBiRu)"
+    },
+    {
+      "id": "agi",
+      "parent": "agi",
+      "enabled": true,
+      "description": "AGI"
+    },
+    {
+      "id": "agos",
+      "parent": "agos",
+      "enabled": true,
+      "description": "AGOS"
+    },
+    {
+      "id": "agos2",
+      "parent": "agos",
+      "enabled": true,
+      "description": "AGOS 2 games"
+    },
+    {
+      "id": "ags",
+      "parent": "ags",
+      "enabled": true,
+      "description": "Adventure Game Studio"
+    },
+    {
+      "id": "alcachofa",
+      "parent": "alcachofa",
+      "enabled": true,
+      "description": "Alcachofa"
+    },
+    {
+      "id": "alg",
+      "parent": "alg",
+      "enabled": true,
+      "description": "American Laser Games"
+    },
+    {
+      "id": "asylum",
+      "parent": "asylum",
+      "enabled": true,
+      "description": "Sanitarium"
+    },
+    {
+      "id": "avalanche",
+      "parent": "avalanche",
+      "enabled": false,
+      "description": "Lord Avalot d'Argent"
+    },
+    {
+      "id": "awe",
+      "parent": "awe",
+      "enabled": true,
+      "description": "Another World"
+    },
+    {
+      "id": "bagel",
+      "parent": "bagel",
+      "enabled": true,
+      "description": "BAGEL"
+    },
+    {
+      "id": "bbvs",
+      "parent": "bbvs",
+      "enabled": true,
+      "description": "Beavis and Butthead in Virtual Stupidity"
+    },
+    {
+      "id": "bladerunner",
+      "parent": "bladerunner",
+      "enabled": true,
+      "description": "Blade Runner"
+    },
+    {
+      "id": "bolt",
+      "parent": "bolt",
+      "enabled": true,
+      "description": "Bolt"
+    },
+    {
+      "id": "buried",
+      "parent": "buried",
+      "enabled": true,
+      "description": "The Journeyman Project 2: Buried in Time"
+    },
+    {
+      "id": "cge",
+      "parent": "cge",
+      "enabled": true,
+      "description": "CGE"
+    },
+    {
+      "id": "cge2",
+      "parent": "cge2",
+      "enabled": true,
+      "description": "CGE2"
+    },
+    {
+      "id": "chamber",
+      "parent": "chamber",
+      "enabled": false,
+      "description": "Chamber"
+    },
+    {
+      "id": "chewy",
+      "parent": "chewy",
+      "enabled": true,
+      "description": "Chewy: Esc from F5"
+    },
+    {
+      "id": "cine",
+      "parent": "cine",
+      "enabled": true,
+      "description": "Cinematique evo 1"
+    },
+    {
+      "id": "colony",
+      "parent": "colony",
+      "enabled": false,
+      "description": "The Colony"
+    },
+    {
+      "id": "composer",
+      "parent": "composer",
+      "enabled": true,
+      "description": "Magic Composer"
+    },
+    {
+      "id": "crab",
+      "parent": "crab",
+      "enabled": true,
+      "description": "CRAB"
+    },
+    {
+      "id": "cruise",
+      "parent": "cruise",
+      "enabled": true,
+      "description": "Cinematique evo 2"
+    },
+    {
+      "id": "cryo",
+      "parent": "cryo",
+      "enabled": false,
+      "description": "Lost Eden"
+    },
+    {
+      "id": "cryomni3d",
+      "parent": "cryomni3d",
+      "enabled": true,
+      "description": "Cryo Omni3D games"
+    },
+    {
+      "id": "versailles",
+      "parent": "cryomni3d",
+      "enabled": true,
+      "description": "Versailles 1685"
+    },
+    {
+      "id": "darkseed",
+      "parent": "darkseed",
+      "enabled": true,
+      "description": "Darkseed"
+    },
+    {
+      "id": "dgds",
+      "parent": "dgds",
+      "enabled": true,
+      "description": "Dynamix Game Development System"
+    },
+    {
+      "id": "director",
+      "parent": "director",
+      "enabled": true,
+      "description": "Macromedia Director"
+    },
+    {
+      "id": "dm",
+      "parent": "dm",
+      "enabled": false,
+      "description": "Dungeon Master"
+    },
+    {
+      "id": "draci",
+      "parent": "draci",
+      "enabled": true,
+      "description": "Dragon History"
+    },
+    {
+      "id": "dragons",
+      "parent": "dragons",
+      "enabled": true,
+      "description": "Blazing Dragons"
+    },
+    {
+      "id": "drascula",
+      "parent": "drascula",
+      "enabled": true,
+      "description": "Drascula: The Vampire Strikes Back"
+    },
+    {
+      "id": "dreamweb",
+      "parent": "dreamweb",
+      "enabled": true,
+      "description": "Dreamweb"
+    },
+    {
+      "id": "efh",
+      "parent": "efh",
+      "enabled": true,
+      "description": "Escape From Hell"
+    },
+    {
+      "id": "freescape",
+      "parent": "freescape",
+      "enabled": true,
+      "description": "Freescape"
+    },
+    {
+      "id": "gamos",
+      "parent": "gamos",
+      "enabled": true,
+      "description": "Gamos"
+    },
+    {
+      "id": "glk",
+      "parent": "glk",
+      "enabled": true,
+      "description": "Glk Interactive Fiction games"
+    },
+    {
+      "id": "gnap",
+      "parent": "gnap",
+      "enabled": true,
+      "description": "UFOs"
+    },
+    {
+      "id": "gob",
+      "parent": "gob",
+      "enabled": true,
+      "description": "Gobli*ns"
+    },
+    {
+      "id": "got",
+      "parent": "got",
+      "enabled": true,
+      "description": "Got"
+    },
+    {
+      "id": "griffon",
+      "parent": "griffon",
+      "enabled": true,
+      "description": "The Griffon Legend"
+    },
+    {
+      "id": "grim",
+      "parent": "grim",
+      "enabled": true,
+      "description": "Grim"
+    },
+    {
+      "id": "monkey4",
+      "parent": "grim",
+      "enabled": false,
+      "description": "Escape from Monkey Island"
+    },
+    {
+      "id": "groovie",
+      "parent": "groovie",
+      "enabled": true,
+      "description": "Groovie"
+    },
+    {
+      "id": "groovie2",
+      "parent": "groovie",
+      "enabled": true,
+      "description": "Groovie 2 games"
+    },
+    {
+      "id": "hadesch",
+      "parent": "hadesch",
+      "enabled": true,
+      "description": "Hades Challenge"
+    },
+    {
+      "id": "hdb",
+      "parent": "hdb",
+      "enabled": true,
+      "description": "Hyperspace Delivery Boy!"
+    },
+    {
+      "id": "hopkins",
+      "parent": "hopkins",
+      "enabled": true,
+      "description": "Hopkins FBI"
+    },
+    {
+      "id": "hpl1",
+      "parent": "hpl1",
+      "enabled": true,
+      "description": "Hpl1"
+    },
+    {
+      "id": "hugo",
+      "parent": "hugo",
+      "enabled": true,
+      "description": "Hugo Trilogy"
+    },
+    {
+      "id": "hypno",
+      "parent": "hypno",
+      "enabled": true,
+      "description": "Hypnotix Inc."
+    },
+    {
+      "id": "icb",
+      "parent": "icb",
+      "enabled": false,
+      "description": "In Cold Blood"
+    },
+    {
+      "id": "illusions",
+      "parent": "illusions",
+      "enabled": true,
+      "description": "Illusions Engine"
+    },
+    {
+      "id": "immortal",
+      "parent": "immortal",
+      "enabled": false,
+      "description": "The Immortal"
+    },
+    {
+      "id": "kingdom",
+      "parent": "kingdom",
+      "enabled": true,
+      "description": "Kingdom: The Far Reaches"
+    },
+    {
+      "id": "kyra",
+      "parent": "kyra",
+      "enabled": true,
+      "description": "Kyra"
+    },
+    {
+      "id": "lol",
+      "parent": "kyra",
+      "enabled": true,
+      "description": "Lands of Lore"
+    },
+    {
+      "id": "eob",
+      "parent": "kyra",
+      "enabled": true,
+      "description": "Eye of the Beholder"
+    },
+    {
+      "id": "lab",
+      "parent": "lab",
+      "enabled": true,
+      "description": "Labyrinth of Time"
+    },
+    {
+      "id": "lastexpress",
+      "parent": "lastexpress",
+      "enabled": true,
+      "description": "The Last Express"
+    },
+    {
+      "id": "lilliput",
+      "parent": "lilliput",
+      "enabled": false,
+      "description": "Lilliput"
+    },
+    {
+      "id": "lure",
+      "parent": "lure",
+      "enabled": true,
+      "description": "Lure of the Temptress"
+    },
+    {
+      "id": "m4",
+      "parent": "m4",
+      "enabled": true,
+      "description": "M4"
+    },
+    {
+      "id": "macventure",
+      "parent": "macventure",
+      "enabled": false,
+      "description": "MacVenture"
+    },
+    {
+      "id": "made",
+      "parent": "made",
+      "enabled": true,
+      "description": "MADE"
+    },
+    {
+      "id": "mads",
+      "parent": "mads",
+      "enabled": true,
+      "description": "MADS"
+    },
+    {
+      "id": "madsv2",
+      "parent": "mads",
+      "enabled": false,
+      "description": "MADS V2"
+    },
+    {
+      "id": "mediastation",
+      "parent": "mediastation",
+      "enabled": false,
+      "description": "Media Station"
+    },
+    {
+      "id": "mm",
+      "parent": "mm",
+      "enabled": true,
+      "description": "Might and Magic"
+    },
+    {
+      "id": "mm1",
+      "parent": "mm",
+      "enabled": true,
+      "description": "Might and Magic 1"
+    },
+    {
+      "id": "xeen",
+      "parent": "mm",
+      "enabled": true,
+      "description": "Might and Magic Xeen"
+    },
+    {
+      "id": "mohawk",
+      "parent": "mohawk",
+      "enabled": true,
+      "description": "Mohawk"
+    },
+    {
+      "id": "cstime",
+      "parent": "mohawk",
+      "enabled": false,
+      "description": "Where in Time is Carmen Sandiego?"
+    },
+    {
+      "id": "riven",
+      "parent": "mohawk",
+      "enabled": true,
+      "description": "Riven: The Sequel to Myst"
+    },
+    {
+      "id": "myst",
+      "parent": "mohawk",
+      "enabled": true,
+      "description": "Myst"
+    },
+    {
+      "id": "mystme",
+      "parent": "mohawk",
+      "enabled": true,
+      "description": "Myst ME"
+    },
+    {
+      "id": "mortevielle",
+      "parent": "mortevielle",
+      "enabled": true,
+      "description": "Mortevielle"
+    },
+    {
+      "id": "mtropolis",
+      "parent": "mtropolis",
+      "enabled": true,
+      "description": "mTropolis"
+    },
+    {
+      "id": "mutationofjb",
+      "parent": "mutationofjb",
+      "enabled": false,
+      "description": "Mutation of JB"
+    },
+    {
+      "id": "myst3",
+      "parent": "myst3",
+      "enabled": true,
+      "description": "Myst 3"
+    },
+    {
+      "id": "nancy",
+      "parent": "nancy",
+      "enabled": true,
+      "description": "Nancy Drew"
+    },
+    {
+      "id": "neverhood",
+      "parent": "neverhood",
+      "enabled": true,
+      "description": "Neverhood"
+    },
+    {
+      "id": "ngi",
+      "parent": "ngi",
+      "enabled": true,
+      "description": "Nikita Game Interface"
+    },
+    {
+      "id": "parallaction",
+      "parent": "parallaction",
+      "enabled": true,
+      "description": "Parallaction"
+    },
+    {
+      "id": "pegasus",
+      "parent": "pegasus",
+      "enabled": true,
+      "description": "The Journeyman Project: Pegasus Prime"
+    },
+    {
+      "id": "pelrock",
+      "parent": "pelrock",
+      "enabled": true,
+      "description": "Alfred Pelrock"
+    },
+    {
+      "id": "petka",
+      "parent": "petka",
+      "enabled": true,
+      "description": "Red Comrades"
+    },
+    {
+      "id": "phoenixvr",
+      "parent": "phoenixvr",
+      "enabled": true,
+      "description": "Phoenix VR"
+    },
+    {
+      "id": "pink",
+      "parent": "pink",
+      "enabled": true,
+      "description": "Pink Panther"
+    },
+    {
+      "id": "playground3d",
+      "parent": "playground3d",
+      "enabled": false,
+      "description": "Playground 3D: the testing and playground environment for 3d renderers"
+    },
+    {
+      "id": "plumbers",
+      "parent": "plumbers",
+      "enabled": true,
+      "description": "Plumbers Don't Wear Ties"
+    },
+    {
+      "id": "prince",
+      "parent": "prince",
+      "enabled": true,
+      "description": "The Prince and The Coward"
+    },
+    {
+      "id": "private",
+      "parent": "private",
+      "enabled": true,
+      "description": "Private Eye"
+    },
+    {
+      "id": "qdengine",
+      "parent": "qdengine",
+      "enabled": true,
+      "description": "QD Engine"
+    },
+    {
+      "id": "queen",
+      "parent": "queen",
+      "enabled": true,
+      "description": "Flight of the Amazon Queen"
+    },
+    {
+      "id": "saga",
+      "parent": "saga",
+      "enabled": true,
+      "description": "SAGA"
+    },
+    {
+      "id": "ihnm",
+      "parent": "saga",
+      "enabled": true,
+      "description": "IHNM"
+    },
+    {
+      "id": "saga2",
+      "parent": "saga2",
+      "enabled": true,
+      "description": "SAGA2"
+    },
+    {
+      "id": "sci",
+      "parent": "sci",
+      "enabled": true,
+      "description": "SCI"
+    },
+    {
+      "id": "sci32",
+      "parent": "sci",
+      "enabled": true,
+      "description": "SCI32 games"
+    },
+    {
+      "id": "scumm",
+      "parent": "scumm",
+      "enabled": true,
+      "description": "SCUMM"
+    },
+    {
+      "id": "scumm_7_8",
+      "parent": "scumm",
+      "enabled": true,
+      "description": "v7 & v8 games"
+    },
+    {
+      "id": "he",
+      "parent": "scumm",
+      "enabled": true,
+      "description": "HE71+ games"
+    },
+    {
+      "id": "sherlock",
+      "parent": "sherlock",
+      "enabled": true,
+      "description": "The Lost Files of Sherlock Holmes"
+    },
+    {
+      "id": "sky",
+      "parent": "sky",
+      "enabled": true,
+      "description": "Beneath a Steel Sky"
+    },
+    {
+      "id": "sludge",
+      "parent": "sludge",
+      "enabled": true,
+      "description": "Sludge"
+    },
+    {
+      "id": "stark",
+      "parent": "stark",
+      "enabled": true,
+      "description": "The Longest Journey"
+    },
+    {
+      "id": "startrek",
+      "parent": "startrek",
+      "enabled": false,
+      "description": "Star Trek 25th Anniversary/Judgment Rites"
+    },
+    {
+      "id": "supernova",
+      "parent": "supernova",
+      "enabled": true,
+      "description": "Mission Supernova"
+    },
+    {
+      "id": "sword1",
+      "parent": "sword1",
+      "enabled": true,
+      "description": "Broken Sword"
+    },
+    {
+      "id": "sword2",
+      "parent": "sword2",
+      "enabled": true,
+      "description": "Broken Sword II"
+    },
+    {
+      "id": "sword25",
+      "parent": "sword25",
+      "enabled": true,
+      "description": "Broken Sword 2.5"
+    },
+    {
+      "id": "teenagent",
+      "parent": "teenagent",
+      "enabled": true,
+      "description": "Teen Agent"
+    },
+    {
+      "id": "testbed",
+      "parent": "testbed",
+      "enabled": false,
+      "description": "TestBed: the Testing framework"
+    },
+    {
+      "id": "tetraedge",
+      "parent": "tetraedge",
+      "enabled": true,
+      "description": "Tetraedge"
+    },
+    {
+      "id": "tinsel",
+      "parent": "tinsel",
+      "enabled": true,
+      "description": "Tinsel"
+    },
+    {
+      "id": "titanic",
+      "parent": "titanic",
+      "enabled": true,
+      "description": "Starship Titanic"
+    },
+    {
+      "id": "toltecs",
+      "parent": "toltecs",
+      "enabled": true,
+      "description": "3 Skulls of the Toltecs"
+    },
+    {
+      "id": "tony",
+      "parent": "tony",
+      "enabled": true,
+      "description": "Tony Tough and the Night of Roasted Moths"
+    },
+    {
+      "id": "toon",
+      "parent": "toon",
+      "enabled": true,
+      "description": "Toonstruck"
+    },
+    {
+      "id": "tot",
+      "parent": "tot",
+      "enabled": true,
+      "description": "Tot"
+    },
+    {
+      "id": "touche",
+      "parent": "touche",
+      "enabled": true,
+      "description": "Touche: The Adventures of the Fifth Musketeer"
+    },
+    {
+      "id": "trecision",
+      "parent": "trecision",
+      "enabled": true,
+      "description": "Trecision Adventure Module"
+    },
+    {
+      "id": "tsage",
+      "parent": "tsage",
+      "enabled": true,
+      "description": "TsAGE"
+    },
+    {
+      "id": "ringworld",
+      "parent": "tsage",
+      "enabled": true,
+      "description": "Ringworld: Revenge of the Patriarch"
+    },
+    {
+      "id": "blueforce",
+      "parent": "tsage",
+      "enabled": true,
+      "description": "Blue Force"
+    },
+    {
+      "id": "ringworld2",
+      "parent": "tsage",
+      "enabled": true,
+      "description": "Return to Ringworld"
+    },
+    {
+      "id": "tucker",
+      "parent": "tucker",
+      "enabled": true,
+      "description": "Bud Tucker in Double Trouble"
+    },
+    {
+      "id": "twine",
+      "parent": "twine",
+      "enabled": true,
+      "description": "Little Big Adventure"
+    },
+    {
+      "id": "twp",
+      "parent": "twp",
+      "enabled": true,
+      "description": "Thimbleweed Park"
+    },
+    {
+      "id": "ultima",
+      "parent": "ultima",
+      "enabled": true,
+      "description": "Ultima"
+    },
+    {
+      "id": "akalabeth",
+      "parent": "ultima",
+      "enabled": false,
+      "description": "Akalabeth"
+    },
+    {
+      "id": "ultima1",
+      "parent": "ultima",
+      "enabled": false,
+      "description": "Ultima I - The First Age of Darkness"
+    },
+    {
+      "id": "ultima4",
+      "parent": "ultima",
+      "enabled": true,
+      "description": "Ultima IV - Quest of the Avatar"
+    },
+    {
+      "id": "ultima6",
+      "parent": "ultima",
+      "enabled": true,
+      "description": "Ultima VI = The False Prophet"
+    },
+    {
+      "id": "ultima8",
+      "parent": "ultima",
+      "enabled": true,
+      "description": "Ultima VIII - Pagan"
+    },
+    {
+      "id": "vcruise",
+      "parent": "vcruise",
+      "enabled": true,
+      "description": "V-Cruise"
+    },
+    {
+      "id": "voyeur",
+      "parent": "voyeur",
+      "enabled": true,
+      "description": "Voyeur"
+    },
+    {
+      "id": "wage",
+      "parent": "wage",
+      "enabled": true,
+      "description": "WAGE"
+    },
+    {
+      "id": "watchmaker",
+      "parent": "watchmaker",
+      "enabled": false,
+      "description": "The Watchmaker"
+    },
+    {
+      "id": "waynesworld",
+      "parent": "waynesworld",
+      "enabled": false,
+      "description": "Wayne's World"
+    },
+    {
+      "id": "wintermute",
+      "parent": "wintermute",
+      "enabled": true,
+      "description": "Wintermute"
+    },
+    {
+      "id": "wme3d",
+      "parent": "wintermute",
+      "enabled": true,
+      "description": "Wintermute3D"
+    },
+    {
+      "id": "foxtail",
+      "parent": "wintermute",
+      "enabled": true,
+      "description": "FoxTail"
+    },
+    {
+      "id": "herocraft",
+      "parent": "wintermute",
+      "enabled": true,
+      "description": "HeroCraft"
+    },
+    {
+      "id": "zvision",
+      "parent": "zvision",
+      "enabled": true,
+      "description": "Z-Vision"
+    }
+  ]
+}

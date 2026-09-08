@@ -27,6 +27,7 @@
 #include "engines/advancedDetector.h"
 #include "engines/metaengine.h"
 #include "base/commandLine.h"
+#include "base/retrom-detection.h"
 #include "base/plugins.h"
 #include "base/version.h"
 
@@ -728,6 +729,9 @@ Common::String parseCommandLine(Common::StringMap &settings, int argc, const cha
 			END_COMMAND
 
 			DO_LONG_COMMAND("detect")
+			END_COMMAND
+
+			DO_LONG_COMMAND("retrom-detect")
 			END_COMMAND
 
 			DO_LONG_COMMAND("auto-detect")
@@ -2158,6 +2162,10 @@ bool processSettings(Common::String &command, Common::StringMap &settings, Commo
 
 		printf(HELP_STRING4);
 #endif
+		return cmdDoExit;
+	} else if (command == "retrom-detect") {
+		if (!printRetromDetection(Common::Path::fromConfig(settings["path"]), settings["recursive"] == "true"))
+			err = Common::kUnknownError;
 		return cmdDoExit;
 	} else if (command == "auto-detect") {
 		bool resursive = settings["recursive"] == "true";

@@ -45,7 +45,7 @@ EM_JS(void, ttsInit, (), {
 	const refreshVoices = () => {
 		globalThis['ttsVoiceMap'] = {};
 		var cnt = 0;
-		voices = window.speechSynthesis.getVoices();
+		const voices = window.speechSynthesis.getVoices();
 		Array.from(voices).forEach((voice) => {
 			if (!(voice.lang in globalThis['ttsVoiceMap'])) {
 				globalThis['ttsVoiceMap'][voice.lang] = {};
@@ -124,7 +124,7 @@ EM_JS(bool, _ttsSay, (const char *text, const char *voice_name, const char *voic
 		
 	}
 	// queue and speak next utterance
-	voice = globalThis['ttsVoiceMap'][voice_lang][voice_name];
+	const voice = globalThis['ttsVoiceMap'][voice_lang][voice_name];
 	const utterance = new SpeechSynthesisUtterance(text);
 	utterance.onend = function(event) { // this is triggered when an utterance completes speaking 
 		if (globalThis['ttsUtteranceQueue'][0] == event.target){
@@ -181,7 +181,7 @@ bool EmscriptenTextToSpeechManager::say(const Common::U32String &str, Action act
 }
 
 EM_JS(char **, _ttsGetVoices, (), {
-	voices = Array.from(Object.values(globalThis['ttsVoiceMap'])).map(Object.values).flat() // flatten voice map
+	const voices = Array.from(Object.values(globalThis['ttsVoiceMap'])).map(Object.values).flat() // flatten voice map
 		.sort((a,b) => a.default ===  b.default ? a.name.localeCompare(b.name):a.default?-1:1) // first default, then alphabetically
 		.map(voice=>[voice.name,voice.lang])
 		.flat();

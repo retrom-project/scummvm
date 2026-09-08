@@ -19,6 +19,7 @@
  *
  */
 
+#include "common/retrom-restore.h"
 #include "common/savefile.h"
 #include "common/stream.h"
 #include "common/system.h"
@@ -1427,13 +1428,16 @@ bool gamestate_restore(EngineState *s, int saveId) {
 
 	if (saveStream == nullptr) {
 		warning("Savegame #%d not found", saveId);
+		RetromHost::restoreResult(saveId, false);
 		return false;
 	}
 
 	gamestate_restore(s, saveStream);
+	const bool restored = !saveStream->err() && !saveStream->eos() && s->abortScriptProcessing == kAbortLoadGame;
 	delete saveStream;
 
 	gamestate_afterRestoreFixUp(s, saveId);
+	RetromHost::restoreResult(saveId, restored);
 	return true;
 }
 

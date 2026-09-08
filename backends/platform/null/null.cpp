@@ -52,6 +52,7 @@ typedef void (*sighandler_t)(int);
 #include "backends/modular-backend.h"
 #include "backends/mutex/null/null-mutex.h"
 #include "base/main.h"
+#include "base/retrom-detection.h"
 
 #ifndef NULL_DRIVER_USE_FOR_TEST
 #include "backends/saves/default/default-saves.h"
@@ -262,12 +263,34 @@ OSystem *OSystem_NULL_create(bool silenceLogs) {
 
 #ifndef NULL_DRIVER_USE_FOR_TEST
 int main(int argc, char *argv[]) {
+#ifdef POSIX
+	int outputFD = -1;
+	for (int index = 1; index < argc; ++index) {
+		if (strcmp(argv[index], "--retrom-detect") == 0) {
+			// Upstream detectors may print diagnostics directly. Keep them off the JSON channel.
+			outputFD = dup(STDOUT_FILENO);
+			if (outputFD < 0 || dup2(STDERR_FILENO, STDOUT_FILENO) < 0)
+				return 1;
+			Base::deferRetromDetectionOutput();
+			break;
+		}
+	}
+#endif
 	g_system = OSystem_NULL_create(false);
 	assert(g_system);
 
 	// Invoke the actual ScummVM main entry point:
 	int res = scummvm_main(argc, argv);
 	g_system->destroy();
+#ifdef POSIX
+	if (outputFD >= 0) {
+		fflush(stdout);
+		if (dup2(outputFD, STDOUT_FILENO) < 0)
+			return 1;
+		close(outputFD);
+		fputs(Base::retromDetectionOutput().c_str(), stdout);
+	}
+#endif
 	return res;
 }
 #endif

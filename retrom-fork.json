@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "forkRepository": "https://github.com/retrom-project/scummvm",
+  "defaultBranch": "retrom/2026.3.0",
+  "upstreamMirrorBranch": "master",
+  "upstreams": [
+    {
+      "role": "engine",
+      "repository": "https://github.com/scummvm/scummvm",
+      "refType": "TAG",
+      "ref": "v2026.3.0",
+      "commit": "fed42f2068dcafc6aafa1c28c77e4c88def74b66"
+    }
+  ],
+  "releaseTagPattern": "^retrom-core-2026\\.3\\.0-r[1-9][0-9]*(-rc\\.[1-9][0-9]*)?$",
+  "adapterAbi": "scummvm-host-v1",
+  "releaseAssets": [
+    "scummvm-runtime.zip",
+    "rpg-runtime-release.json"
+  ]
+}

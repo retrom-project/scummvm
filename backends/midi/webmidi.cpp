@@ -62,7 +62,7 @@ MidiDriver_WebMIDI::~MidiDriver_WebMIDI() {
 
 EM_ASYNC_JS(int, _midiOpen, (const char *id_c), {
 	var id = UTF8ToString(id_c);
-	result = await midiOutputMap.get(id).open().catch((error) => {
+	const result = await midiOutputMap.get(id).open().catch((error) => {
 		console.error(error);
 		return 1;
 	});
@@ -148,7 +148,7 @@ public:
 };
 
 EM_JS(char **, _midiGetOutputNames, (), {
-	deviceNames = Array.from(midiOutputMap || []).map((elem) => elem[1].name);
+	const deviceNames = Array.from(midiOutputMap || []).map((elem) => elem[1].name);
 	deviceNames.push(""); // we need this to find the end of the array on the native side.
 
 	// convert the strings to C strings

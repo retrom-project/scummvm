@@ -19,6 +19,7 @@
  *
  */
 
+#include "common/retrom-restore.h"
 #include "common/config-manager.h"
 #include "common/memstream.h"
 #include "common/savefile.h"
@@ -656,7 +657,9 @@ bool ScummEngine::saveState(int slot, bool compat, Common::String &filename) {
 bool ScummEngine::loadState(int slot, bool compat) {
 	// Wrapper around the other variant
 	Common::String filename;
-	return loadState(slot, compat, filename);
+	const bool restored = loadState(slot, compat, filename);
+	RetromHost::restoreResult(slot, restored);
+	return restored;
 }
 
 bool ScummEngine::loadState(int slot, bool compat, Common::String &filename) {

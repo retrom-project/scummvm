@@ -19,6 +19,7 @@
  *
  */
 
+#include "common/retrom-restore.h"
 #include "common/textconsole.h"
 #include "common/translation.h"
 #include "common/text-to-speech.h"
@@ -340,6 +341,8 @@ bool DrasculaEngine::loadGame(int slot) {
 	if (_roomNumber == 102 && flags[1] == 2)
 		activatePendulum();
 
+	RetromHost::restoreResult(slot, !in->err() && !in->eos());
+	delete in;
 	return true;
 }
 
