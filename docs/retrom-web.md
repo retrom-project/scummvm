@@ -37,6 +37,14 @@ and event delivery functions for first movement, release and a fresh device. The
 archive retains SDL's original license. The left stick moves ScummVM's virtual
 mouse; D-pad actions remain engine-specific upstream mappings.
 
+SDL3 device-added events contain instance IDs, whereas `joystick_num` selects an
+ordinal in `SDL_GetJoysticks`. The event source resolves that ordinal before
+opening a newly discovered controller, keeps an already open controller intact,
+and accepts a fresh instance after disconnection. This covers browsers exposing
+a controller only after gameplay begins. `test_sdl3_hotplug.py` executes the real
+handlers for late discovery, reconnection, unrelated devices, disabled/invalid
+selection, duplicate startup events and open failure, for gamepads and joysticks.
+
 ## Host contract
 
 `scummvm-retrom.mjs` exports the ABI and `createScummVM`. The host supplies an SDL
