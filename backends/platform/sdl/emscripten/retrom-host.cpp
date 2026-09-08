@@ -101,8 +101,12 @@ void poll() {
 		retromBoundary();
 	if (pendingSlot < 0 && retromShouldPause()) {
 		PauseToken pause = g_engine->pauseEngine();
+		// Pause simulation, but keep the retained game surface fitted to the canvas.
+		// A resize may arrive before pausing or during any browser yield below.
+		g_system->updateScreen();
 		retromPaused(1);
 		while (retromShouldPause()) {
+			g_system->updateScreen();
 			if (!openSaves)
 				retromBoundary();
 			emscripten_sleep(16);

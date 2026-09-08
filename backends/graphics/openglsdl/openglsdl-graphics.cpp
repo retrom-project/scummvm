@@ -19,6 +19,10 @@
  *
  */
 
+#if defined(EMSCRIPTEN) && defined(RETROM_HOST)
+#include <emscripten/html5.h>
+#endif
+
 #include "backends/graphics/openglsdl/openglsdl-graphics.h"
 #include "backends/graphics/opengl/texture.h"
 #include "backends/events/sdl/sdl-events.h"
@@ -363,6 +367,16 @@ void OpenGLSdlGraphicsManager::initSize(uint w, uint h, const Graphics::PixelFor
 }
 
 void OpenGLSdlGraphicsManager::updateScreen() {
+#if defined(EMSCRIPTEN) && defined(RETROM_HOST)
+	// Browser resize callbacks can change the backing store while Asyncify yields,
+	// before SDL's queued resize event reaches us. Never draw using the old viewport.
+	int canvasWidth, canvasHeight;
+	if (emscripten_get_canvas_element_size("#canvas", &canvasWidth, &canvasHeight) == EMSCRIPTEN_RESULT_SUCCESS &&
+	    canvasWidth > 0 && canvasHeight > 0 &&
+	    (canvasWidth != _windowWidth || canvasHeight != _windowHeight)) {
+		handleResize(canvasWidth, canvasHeight);
+	}
+#endif
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 	static uint32 lastUpdateTime = 0;
 

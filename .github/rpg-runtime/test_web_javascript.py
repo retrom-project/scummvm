@@ -34,6 +34,41 @@ def helper(relative, name):
 
 
 class WebJavaScriptTests(unittest.TestCase):
+    def test_hosted_canvas_retains_pixels_for_screenshots_after_browser_presentation(self):
+        factory = source("dists/emscripten/scummvm-retrom.mjs")
+        factory = re.sub(r'^import (\w+) from "./scummvm.mjs";',
+                         r'const \1 = options => Promise.resolve(options);', factory, flags=re.MULTILINE)
+        factory = re.sub(r"export \{[^}]+\};", "", factory).replace("export ", "")
+        program = '''
+const vm = require('node:vm');
+const assert = require('node:assert/strict');
+const calls = [];
+const canvas = {getContext(type, attributes) {calls.push({owner: this, type, attributes}); return {};}};
+const otherCanvas = {getContext: canvas.getContext};
+const context = {canvas, otherCanvas, assert, calls};
+vm.createContext(context);
+vm.runInContext(FUNCTIONS, context);
+vm.runInContext(`
+const originalOtherContext = otherCanvas.getContext;
+createScummVM({canvas, noInitialRun: true});
+const attributes = {alpha: false, antialias: false, preserveDrawingBuffer: false};
+for (const type of ['webgl', 'webgl2', 'experimental-webgl']) {
+ canvas.getContext(type, attributes);
+ const call = calls.at(-1);
+ assert.equal(call.owner, canvas);
+ assert.equal(call.attributes.preserveDrawingBuffer, true);
+ assert.equal(call.attributes.alpha, false);
+ assert.equal(call.attributes.antialias, false);
+}
+assert.equal(attributes.preserveDrawingBuffer, false);
+canvas.getContext('2d', attributes);
+assert.equal(calls.at(-1).attributes, attributes);
+assert.equal(otherCanvas.getContext, originalOtherContext);
+`, context);
+'''.replace("FUNCTIONS", json.dumps(factory))
+        result = subprocess.run([os.environ.get("NODE", "node"), "-e", program], capture_output=True, text=True, timeout=10)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
     def test_speech_and_midi_enumeration_with_empty_and_populated_device_lists(self):
         speech = "backends/text-to-speech/emscripten/emscripten-text-to-speech.cpp"
         midi = "backends/midi/webmidi.cpp"

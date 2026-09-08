@@ -57,6 +57,13 @@ through a native pause token. Capture requires runtime saving and native save-li
 support, checks the current scene, allocates a free non-autosave slot, and waits
 for the slot to appear with no open save streams. Deferred engine saves use the
 same completion boundary with a 15-second limit. Existing slots are not overwritten.
+Hosted OpenGL drawing reads the current canvas backing dimensions before rendering,
+including when a browser resize arrives during an Asyncify yield ahead of SDL's
+resize event. Pausing stops engine simulation while retaining presentation updates,
+so resizing a paused game redraws its existing surface at the new dimensions.
+The factory preserves the supplied canvas's WebGL drawing buffer so screenshots
+remain readable after browser presentation, including while paused; other canvases
+and non-WebGL contexts are unaffected.
 The result reports the precise native slot; unsupported games retain in-game
 saving. Startup restoration requires both native load-at-startup support and an explicit
 `onRestoreResult(slot, success)` observation after actual deserialization. Sky,
@@ -80,7 +87,10 @@ event. Requested exits use the same cleanup boundary without reopening the launc
 `test_detector.py` exercises bounded detection and supports an optional local
 public-game corpus. `test_restore_boundary.py` executes the native exact-slot/once-only result guard.
 `test_web_javascript.py` executes the embedded speech/MIDI
-JavaScript under strict parsing. Hosted control, file-cache and native-save tests
+JavaScript under strict parsing and checks hosted WebGL buffer retention.
+`test_canvas_resize.py` executes the native drawing and pause boundaries against
+delayed resize delivery, repeated dimensions, unavailable/zero-size canvases and
+resizing without resuming simulation. Hosted control, file-cache and native-save tests
 belong to the consuming runtime; product import, review, launch, input and restore
 acceptance belongs to Retrom. Building this fork alone does not prove game support.
 
