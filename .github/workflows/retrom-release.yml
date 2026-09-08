@@ -1,0 +1,52 @@
+name: Retrom core release
+on:
+  push:
+    tags: ['retrom-core-2026.3.0-r*']
+permissions:
+  contents: write
+concurrency:
+  group: retrom-release-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      RETROM_BUILD_JOBS: '4'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify the immutable annotated maintenance tag
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin '+refs/heads/retrom/2026.3.0:refs/remotes/origin/retrom/2026.3.0'
+          git fetch --force origin "refs/tags/$GITHUB_REF_NAME:refs/tags/$GITHUB_REF_NAME"
+          test "$(git cat-file -t "refs/tags/$GITHUB_REF_NAME")" = tag
+          test "$(git rev-list -n 1 "refs/tags/$GITHUB_REF_NAME")" = "$GITHUB_SHA"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/retrom/2026.3.0
+          git merge-base --is-ancestor fed42f2068dcafc6aafa1c28c77e4c88def74b66 "$GITHUB_SHA"
+      - name: Restore verified build dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            .retrom/libs
+            .retrom/em-cache
+          key: retrom-deps-${{ runner.os }}-${{ hashFiles('.github/rpg-runtime/Dockerfile', '.github/rpg-runtime/build-lock.json', '.github/rpg-runtime/prepare-sdl3.py') }}
+      - name: Build and validate exact release assets
+        run: |
+          mkdir -p "$RUNNER_TEMP/scummvm-release"
+          bash .github/rpg-runtime/build-assets.sh "$RUNNER_TEMP/scummvm-release"
+          python3 .github/rpg-runtime/verify-release.py --output "$RUNNER_TEMP/scummvm-release" \
+            --repository "https://github.com/$GITHUB_REPOSITORY" --tag "$GITHUB_REF_NAME" --commit "$GITHUB_SHA"
+      - name: Publish the immutable core release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          prerelease=()
+          if [[ "$GITHUB_REF_NAME" == *-rc.* ]]; then prerelease+=(--prerelease); fi
+          gh release create "$GITHUB_REF_NAME" "${prerelease[@]}" --verify-tag \
+            --title "ScummVM $GITHUB_REF_NAME" --generate-notes \
+            "$RUNNER_TEMP/scummvm-release/scummvm-runtime.zip" \
+            "$RUNNER_TEMP/scummvm-release/rpg-runtime-release.json"

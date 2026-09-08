@@ -1,0 +1,36 @@
+name: Retrom core quality
+on:
+  pull_request:
+    branches: ['retrom/2026.3.0']
+  push:
+    branches: ['retrom/2026.3.0']
+permissions:
+  contents: read
+concurrency:
+  group: retrom-quality-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  core:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      RETROM_BUILD_JOBS: '4'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore verified build dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            .retrom/libs
+            .retrom/em-cache
+          key: retrom-deps-${{ runner.os }}-${{ hashFiles('.github/rpg-runtime/Dockerfile', '.github/rpg-runtime/build-lock.json', '.github/rpg-runtime/prepare-sdl3.py') }}
+      - name: Build and validate the complete native/Web archive
+        run: |
+          mkdir -p "$RUNNER_TEMP/scummvm-assets"
+          bash .github/rpg-runtime/build-assets.sh "$RUNNER_TEMP/scummvm-assets"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: scummvm-verified-core
+          path: ${{ runner.temp }}/scummvm-assets/scummvm-runtime.zip
+          if-no-files-found: error
+          retention-days: 7

@@ -107,3 +107,21 @@ record the exact core bytes and engine/plugin selection, and publish the archive
 and release descriptor from the maintenance branch. Candidate working-tree identity
 must not be presented as a released tag. Distribution must retain the archive's
 license notices and provide the corresponding fork source and build inputs.
+
+## Maintained releases
+
+The fork's default branch is `retrom/2026.3.0`; `master` remains an upstream
+mirror. Integration PRs target the maintenance branch. The upstream CI stays on
+the mirror while `retrom-quality.yml` builds and tests the complete Retrom native
+and browser archive on maintenance PRs. Both CI and candidate builds use
+`.github/rpg-runtime/build-assets.sh`, including detector, JavaScript, restore,
+canvas resize, controller discovery and archive integrity checks.
+
+After an approved maintenance PR is merged, publish a new annotated
+`retrom-core-2026.3.0-rN` tag at that commit. Never move or reuse a released tag.
+`retrom-release.yml` verifies the tag object, commit, upstream ancestry and
+maintenance ancestry, rebuilds and checks the same complete archive, then
+publishes `scummvm-runtime.zip` and `rpg-runtime-release.json`. Metadata records
+the exact fork commit, upstream source commit, ABI and observed archive digest
+and size. Runtime aggregation must verify these fixed identities before using
+the enclosed manifest, engine plugins, support data and Linux x86-64 detector.
